@@ -15,6 +15,9 @@ const userschema= new mongoose.Schema({
 });
 const Product= mongoose.model("Product",userschema);
 
+// this route is to handle data wich we receive from form in popup.html
+// if the given url is not present in document then it add the url and price to database else it update the price to that url
+
 
 app.post("/add",function(req,res){
     let url=req.body.url;
@@ -36,6 +39,8 @@ app.post("/add",function(req,res){
 })
 
 
+// this route is to reuturn array of url and corresponding thresold price to background script
+
 app.post("/urlgiver",function(req,res){
 
     
@@ -46,6 +51,9 @@ app.post("/urlgiver",function(req,res){
     
 });
 
+// this route is to compare current price of product to the thresold price of product earlier mentioned
+// if cuurent price is less than thresold price then it send "1" as response to call which was called in background.js
+// I have used puppeteer module of npm to extract current price of product,by calling url from server.js itself
 app.post("/compare",function(req,res){
     let link = req.body.url;
     let comparing_price= req.body.price;
