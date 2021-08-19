@@ -1,17 +1,19 @@
-// const puppeteer =require("puppeteer");
 
 
+// code on next line is to receive the data which popup.js has send to background
 chrome.runtime.onMessage.addListener(function(request,sender,sendResponse){
     $.post("http://localhost:3000/add",request,function(data,status){
         console.log(data);
         console.log(status);
         sendResponse("ok");
     })
+    
+//     this is must "return true"
     return true;
 })
 
-// function to retrieve 
 
+// Here I have made post request to route "urlgiver" in server.js file which will return array of "JSON formatted url and corresponding thresold prices".
 
 let request={};
 $.post("http://localhost:3000/urlgiver",request,function(url_and_price_array,status){
@@ -26,6 +28,7 @@ $.post("http://localhost:3000/urlgiver",request,function(url_and_price_array,sta
 
         };
         
+//         here i have made a post request to "compare" route in server which return "1" if current price is less than earlier entered thresold price
         $.post("http://localhost:3000/compare",data_to_server,function(decision_about_product,status){
             if(decision_about_product=="1")
             {
@@ -33,34 +36,7 @@ $.post("http://localhost:3000/urlgiver",request,function(url_and_price_array,sta
             }
         });
 
-        // // let link=url;
-
-
-        // (async ()=>{
-        //     const browser= await puppeteer.launch();
-        //     const page= await browser.newPage();
-        //     await page.goto(link);
-        //     // await browser.waitForTarget(()=>false);
-        //     const result = await page.evaluate(()=>{
-                
-        //         let price1= document.querySelector("#priceblock_dealprice");
-        //         if(price1==null)
-        //         {
-        //             price1= document.querySelector("#priceblock_ourprice");
-
-        //         }
-        //         let price= price1.innerText;
-                
-        //         return price;
-        //     });
-            
-        //     if(result<=comparing_price)
-        //     {
-        //         alert("Hey You Can Buy It");
-        //     }
-
         
-        //     await browser.close();
-        // })();
+        
     }
 });
